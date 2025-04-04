@@ -1,0 +1,59 @@
+fasta_file: ./dlbio-bpnet/GCF_000001405.13_GRCh37_genomic.fna  # reference genome fasta file
+task_specs:  # specifies multiple tasks (e.g. Oct4, Sox2 Nanog) - Here we only have methylation
+
+  # Oct4:
+  #   tracks:
+  #     - ../data/chip-nexus/Oct4/counts.pos.subset.bw
+  #     - ../data/chip-nexus/Oct4/counts.neg.subset.bw
+  #   peaks: ../data/chip-nexus/Oct4/idr-optimal-set.summit.subset.bed.gz
+  # Sox2:
+  #   tracks:
+  #     - ../data/chip-nexus/Sox2/counts.pos.subset.bw
+  #     - ../data/chip-nexus/Sox2/counts.neg.subset.bw
+  #   peaks: ../data/chip-nexus/Sox2/idr-optimal-set.summit.subset.bed.gz
+
+  # Nanog: # Nanog is the task name
+  #   tracks:
+  #     # List of bigwig files (1 or more) corresponding to the task
+  #     # The model will predict each track individually (here coverage of
+  #     # reads mapping to the positive and negative strand) and
+  #     # the contribution scores will be averaged across all of these tracks
+  #     - ../data/chip-nexus/Nanog/counts.pos.subset.bw
+  #     - ../data/chip-nexus/Nanog/counts.neg.subset.bw
+
+    # # Peaks associated with Nanog task (optional)
+    # # These are used to later run TF-MoDISco for Nanog contrib scores
+    # # only in the Nanog peaks.
+    # peaks: ../data/chip-nexus/Nanog/idr-optimal-set.summit.subset.bed.gz
+
+  RA_disease:
+    tracks:
+      - ./dlbio-bpnet/preprocessed_bw_files/RA_disease.bw
+    peaks: ./dlbio-bpnet/preprocessed_summit_bed_files/RA_disease_summits.bed.gz
+
+  RA_healthy:
+    tracks:
+      - ./dlbio-bpnet/preprocessed_bw_files/RA_healthy.bw
+    peaks: ./dlbio-bpnet/preprocessed_summit_bed_files/RA_healthy_summits.bed.gz
+  
+  SLE_disease:
+    tracks:
+      - ./dlbio-bpnet/preprocessed_bw_files/SLE_disease.bw
+    peaks: ./dlbio-bpnet/preprocessed_summit_bed_files/SLE_disease_summits.bed.gz
+  
+  SLE_healthy:
+    tracks:
+      - ./dlbio-bpnet/preprocessed_bw_files/SLE_healthy.bw
+    peaks: ./dlbio-bpnet/preprocessed_summit_bed_files/SLE_healthy_summits.bed.gz
+
+# bias_specs:  # specifies multiple bias tracks
+#   input:  # first bias track
+#     tracks:  # can specify multiple tracks
+#       - ../data/chip-nexus/patchcap/counts.pos.subset.bw
+#       - ../data/chip-nexus/patchcap/counts.neg.subset.bw
+#     tasks:  # applies to Oct4, Sox2, Nanog tasks
+#       - Oct4
+#       - Sox2
+#       - Nanog
+  # NOTE: bias_specs don't specify peaks since they are only used
+  # to correct for biases
