@@ -1,4 +1,4 @@
-fasta_file: ./dlbio-bpnet/GCF_000001405.13_GRCh37_genomic.fna  # reference genome fasta file
+fasta_file: ./dlbio-bpnet/clean_hg19.fasta  # reference genome fasta file
 task_specs:  # specifies multiple tasks (e.g. Oct4, Sox2 Nanog) - Here we only have methylation
 
   # Oct4:
