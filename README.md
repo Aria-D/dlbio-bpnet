@@ -11,8 +11,3 @@ We use the BPNet conda environment for the training and post-processing of train
 ## Data Preprocessing:
 First, our methylation data must be preprocessed to be compatible with BPNet. The code for 
 
-## Work in Progress
-    - Figure out the BPNet code Repo
-    - Split train, validation, and test dataset
-    - Find a feature of the model to fine tune
-    - Actually read paper for result interpretation and the deployment of the BPNet model with their data
