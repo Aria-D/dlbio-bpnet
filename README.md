@@ -1,13 +1,15 @@
-<!-- GRCh37 fasta file download from here: 
-https://api.ncbi.nlm.nih.gov/datasets/v2/genome/accession/GCF_000001405.13/download?include_annotation_type=GENOME_FASTA&include_annotation_type=GENOME_GFF&include_annotation_type=RNA_FASTA&include_annotation_type=CDS_FASTA&include_annotation_type=PROT_FASTA&include_annotation_type=SEQUENCE_REPORT&hydrated=FULLY_HYDRATED -->
 
-# DLBio_class Autoimmune Disorders Methylation Project
 
-## Data Source:
-    - Reference Genome: https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000001405.13/ (GRCh37 hg19)
+# DLBio - 'MethylBPNet' for Autoimmune Disorders [Final Project]
+### Authors: Shenni Liang, Aria Dandawate, Tona Gonzalez
 
-## Code Repo:
-    - BPNet: https://github.com/kundajelab/bpnet/tree/master/bpnet
+* * This is the repository for the DLBio final project -- training BPNet models for use with methylation data to study autoimmune disorders.  * *
+
+## Conda Environment:
+We use the BPNet conda environment for the training and post-processing of training results: https://github.com/kundajelab/bpnet.
+
+## Data Preprocessing:
+First, our methylation data must be preprocessed to be compatible with BPNet. The code for 
 
 ## Work in Progress
     - Figure out the BPNet code Repo
