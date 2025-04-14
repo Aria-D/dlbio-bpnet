@@ -1,0 +1,189 @@
+[2025-04-06 16:00:48,764] - [INFO] - Using gpu: 1, memory fraction: 0.45
+[2025-04-06 16:00:48,805] - [INFO] - Using the following premade configuration: bpnet9
+Used config: ----------------------------------------
+import bpnet
+import bpnet.configurables as bpnet2
+import bpnet.datasets as bpnet3
+import bpnet.heads as bpnet4
+import bpnet.layers as bpnet5
+import bpnet.losses as bpnet6
+import bpnet.metrics as bpnet7
+import bpnet.models as bpnet8
+import bpnet.seqmodel as bpnet9
+import bpnet.trainers as bpnet10
+
+# Macros:
+# ==============================================================================
+augment_interval = True
+batchnorm = False
+dataspec = 'dataspec_test.yml'
+exclude_chr = ['chrX', 'chrY']
+filters = 64
+lambda = 10
+lr = 0.004
+n_bias_tracks = 0
+n_dil_layers = 9
+seq_width = 1000
+tasks = ['SLE_disease']
+tconv_kernel_size = 25
+test_chr = ['chr1', 'chr8', 'chr9']
+tracks_per_task = 1
+use_bias = False
+valid_chr = ['chr2', 'chr3', 'chr4']
+
+# Parameters for Adam:
+# ==============================================================================
+Adam.amsgrad = False
+Adam.beta_1 = 0.9
+Adam.beta_2 = 0.999
+Adam.decay = 0.0
+Adam.epsilon = None
+Adam.lr = %lr
+
+# Parameters for bpnet_data:
+# ==============================================================================
+bpnet_data.augment_interval = %augment_interval
+bpnet_data.dataspec = %dataspec
+bpnet_data.exclude_chr = %exclude_chr
+bpnet_data.include_metadata = False
+bpnet_data.interval_augmentation_shift = 200
+bpnet_data.intervals_file = None
+bpnet_data.intervals_format = 'bed'
+bpnet_data.peak_width = %seq_width
+bpnet_data.seq_width = %seq_width
+bpnet_data.shuffle = True
+bpnet_data.tasks = %tasks
+bpnet_data.test_chr = %test_chr
+bpnet_data.track_transform = None
+bpnet_data.valid_chr = %valid_chr
+
+# Parameters for ClassificationMetrics:
+# ==============================================================================
+# None.
+
+# Parameters for DeConv1D:
+# ==============================================================================
+DeConv1D.batchnorm = %batchnorm
+DeConv1D.filters = %filters
+DeConv1D.n_hidden = 0
+DeConv1D.n_tasks = %tracks_per_task
+DeConv1D.padding = 'same'
+DeConv1D.tconv_kernel_size = %tconv_kernel_size
+
+# Parameters for DilatedConv1D:
+# ==============================================================================
+DilatedConv1D.add_pointwise = False
+DilatedConv1D.batchnorm = %batchnorm
+DilatedConv1D.conv1_kernel_size = 25
+DilatedConv1D.filters = %filters
+DilatedConv1D.n_dil_layers = %n_dil_layers
+DilatedConv1D.padding = 'same'
+DilatedConv1D.skip_type = 'residual'
+
+# Parameters for GlobalAvgPoolFCN:
+# ==============================================================================
+GlobalAvgPoolFCN.batchnorm = %batchnorm
+GlobalAvgPoolFCN.dropout = 0
+GlobalAvgPoolFCN.dropout_hidden = 0
+GlobalAvgPoolFCN.hidden = None
+GlobalAvgPoolFCN.n_splines = 0
+GlobalAvgPoolFCN.n_tasks = %tracks_per_task
+
+# Parameters for IntervalAugmentor:
+# ==============================================================================
+# None.
+
+# Parameters for MetricsOrderedDict:
+# ==============================================================================
+# None.
+
+# Parameters for MovingAverages:
+# ==============================================================================
+MovingAverages.window_sizes = [1, 50]
+
+# Parameters for multinomial_nll:
+# ==============================================================================
+# None.
+
+# Parameters for PeakPredictionProfileMetric:
+# ==============================================================================
+PeakPredictionProfileMetric.binsizes = [1, 10]
+PeakPredictionProfileMetric.neg_max_threshold = 0.005
+PeakPredictionProfileMetric.pos_min_threshold = 0.015
+PeakPredictionProfileMetric.required_min_pos_counts = 2.5
+
+# Parameters for ProfileHead:
+# ==============================================================================
+ProfileHead.activation = None
+ProfileHead.bias_input = 'bias/{task}/profile'
+ProfileHead.bias_net = @MovingAverages()
+ProfileHead.bias_shape = (None, %n_bias_tracks)
+ProfileHead.loss = @multinomial_nll
+ProfileHead.loss_weight = 1
+ProfileHead.metric = @PeakPredictionProfileMetric()
+ProfileHead.net = @DeConv1D()
+ProfileHead.postproc_fn = @softmax
+ProfileHead.target_name = '{task}/profile'
+ProfileHead.use_bias = %use_bias
+
+# Parameters for RegressionMetrics:
+# ==============================================================================
+# None.
+
+# Parameters for report_template:
+# ==============================================================================
+report_template.name = 'evaluate.ipynb'
+report_template.raise_error = True
+
+# Parameters for ScalarHead:
+# ==============================================================================
+ScalarHead.activation = None
+ScalarHead.bias_input = 'bias/{task}/counts'
+ScalarHead.bias_net = None
+ScalarHead.bias_shape = (%n_bias_tracks,)
+ScalarHead.loss = 'mse'
+ScalarHead.loss_weight = %lambda
+ScalarHead.metric = @RegressionMetrics()
+ScalarHead.net = @GlobalAvgPoolFCN()
+ScalarHead.postproc_fn = None
+ScalarHead.target_name = '{task}/counts'
+ScalarHead.use_bias = %use_bias
+
+# Parameters for SeqModel:
+# ==============================================================================
+SeqModel.body = @DilatedConv1D()
+SeqModel.heads = [@ProfileHead(), @ScalarHead()]
+SeqModel.input_name = 'seq'
+SeqModel.input_shape = None
+SeqModel.optimizer = @keras.optimizers.Adam()
+SeqModel.seqlen = %seq_width
+SeqModel.tasks = %tasks
+
+# Parameters for StrandedProfile:
+# ==============================================================================
+StrandedProfile.excl_chromosomes = None
+StrandedProfile.include_classes = False
+
+# Parameters for train:
+# ==============================================================================
+train.batch_size = 128
+train.data = @bpnet_data()
+train.early_stop_patience = 5
+train.epochs = 200
+train.eval_metric = None
+train.eval_report = @report_template()
+train.eval_skip = []
+train.eval_train = False
+train.model = @SeqModel()
+train.seed = None
+train.stratified_sampler_p = None
+train.tensorboard = True
+train.train_batch_sampler = None
+train.train_epoch_frac = 1.0
+train.train_samples_per_epoch = None
+train.valid_epoch_frac = 1.0
+train.validation_samples = None
+
+----------------------------------------------------
+Epoch 1/200
+   1/2119 [..............................] - ETA: 2:44:29 - loss: 753.0444 - SLE_disease/profile_loss: 15.8890 - SLE_disease/counts_loss: 73.7155   2/2119 [..............................] - ETA: 2:17:56 - loss: 2097.2875 - SLE_disease/profile_loss: 20.3896 - SLE_disease/counts_loss: 207.6898   3/2119 [..............................] - ETA: 2:06:46 - loss: 1801.8945 - SLE_disease/profile_loss: 22.0303 - SLE_disease/counts_loss: 177.9864   4/2119 [..............................] - ETA: 2:00:56 - loss: 1360.5371 - SLE_disease/profile_loss: 22.2704 - SLE_disease/counts_loss: 133.8267   5/2119 [..............................] - ETA: 1:57:26 - loss: 1143.8963 - SLE_disease/profile_loss: 22.7058 - SLE_disease/counts_loss: 112.1190   6/2119 [..............................] - ETA: 1:56:13 - loss: 979.6086 - SLE_disease/profile_loss: 23.3382 - SLE_disease/counts_loss: 95.6270     7/2119 [..............................] - ETA: 1:55:05 - loss: 843.7959 - SLE_disease/profile_loss: 22.6719 - SLE_disease/counts_loss: 82.1124   8/2119 [..............................] - ETA: 1:53:33 - loss: 744.0940 - SLE_disease/profile_loss: 22.1805 - SLE_disease/counts_loss: 72.1913   9/2119 [..............................] - ETA: 1:52:25 - loss: 668.3136 - SLE_disease/profile_loss: 21.7349 - SLE_disease/counts_loss: 64.6579  10/2119 [..............................] - ETA: 1:51:30 - loss: 606.8856 - SLE_disease/profile_loss: 21.8252 - SLE_disease/counts_loss: 58.5060  11/2119 [..............................] - ETA: 1:51:02 - loss: 555.2025 - SLE_disease/profile_loss: 21.2427 - SLE_disease/counts_loss: 53.3960  12/2119 [..............................] - ETA: 1:50:44 - loss: 511.4069 - SLE_disease/profile_loss: 20.9114 - SLE_disease/counts_loss: 49.0496  13/2119 [..............................] - ETA: 1:50:04 - loss: 473.8396 - SLE_disease/profile_loss: 20.3946 - SLE_disease/counts_loss: 45.3445  14/2119 [..............................] - ETA: 1:49:48 - loss: 441.6562 - SLE_disease/profile_loss: 20.0222 - SLE_disease/counts_loss: 42.1634  15/2119 [..............................] - ETA: 1:49:30 - loss: 414.1604 - SLE_disease/profile_loss: 19.9690 - SLE_disease/counts_loss: 39.4191  16/2119 [..............................] - ETA: 1:49:02 - loss: 389.7032 - SLE_disease/profile_loss: 19.6331 - SLE_disease/counts_loss: 37.0070  17/2119 [..............................] - ETA: 1:48:55 - loss: 367.8501 - SLE_disease/profile_loss: 19.1427 - SLE_disease/counts_loss: 34.8707  18/2119 [..............................] - ETA: 1:48:33 - loss: 349.1704 - SLE_disease/profile_loss: 19.1253 - SLE_disease/counts_loss: 33.0045  19/2119 [..............................] - ETA: 1:48:20 - loss: 331.8714 - SLE_disease/profile_loss: 18.7612 - SLE_disease/counts_loss: 31.3110  20/2119 [..............................] - ETA: 1:48:08 - loss: 316.5144 - SLE_disease/profile_loss: 18.5411 - SLE_disease/counts_loss: 29.7973  21/2119 [..............................] - ETA: 1:47:57 - loss: 302.6173 - SLE_disease/profile_loss: 18.3510 - SLE_disease/counts_loss: 28.4266  22/2119 [..............................] - ETA: 1:47:53 - loss: 290.2181 - SLE_disease/profile_loss: 18.3178 - SLE_disease/counts_loss: 27.1900  23/2119 [..............................] - ETA: 1:47:35 - loss: 278.7717 - SLE_disease/profile_loss: 18.2236 - SLE_disease/counts_loss: 26.0548  24/2119 [..............................] - ETA: 1:47:24 - loss: 268.1755 - SLE_disease/profile_loss: 18.0887 - SLE_disease/counts_loss: 25.0087  25/2119 [..............................] - ETA: 1:47:20 - loss: 258.3131 - SLE_disease/profile_loss: 17.9020 - SLE_disease/counts_loss: 24.0411  26/2119 [..............................] - ETA: 1:47:05 - loss: 249.2575 - SLE_disease/profile_loss: 17.7610 - SLE_disease/counts_loss: 23.1496  27/2119 [..............................] - ETA: 1:46:56 - loss: 240.8473 - SLE_disease/profile_loss: 17.6392 - SLE_disease/counts_loss: 22.3208  28/2119 [..............................] - ETA: 1:46:49 - loss: 232.9099 - SLE_disease/profile_loss: 17.4278 - SLE_disease/counts_loss: 21.5482  29/2119 [..............................] - ETA: 1:46:40 - loss: 225.6661 - SLE_disease/profile_loss: 17.3355 - SLE_disease/counts_loss: 20.8331  30/2119 [..............................] - ETA: 1:46:36 - loss: 218.9248 - SLE_disease/profile_loss: 17.2572 - SLE_disease/counts_loss: 20.1668  31/2119 [..............................] - ETA: 1:46:23 - loss: 212.5996 - SLE_disease/profile_loss: 17.1787 - SLE_disease/counts_loss: 19.5421  32/2119 [..............................] - ETA: 1:46:17 - loss: 206.6131 - SLE_disease/profile_loss: 17.0575 - SLE_disease/counts_loss: 18.9556  33/2119 [..............................] - ETA: 1:46:15 - loss: 201.0275 - SLE_disease/profile_loss: 16.9732 - SLE_disease/counts_loss: 18.4054  34/2119 [..............................] - ETA: 1:46:05 - loss: 195.7368 - SLE_disease/profile_loss: 16.8945 - SLE_disease/counts_loss: 17.8842  35/2119 [..............................] - ETA: 1:45:59 - loss: 190.7642 - SLE_disease/profile_loss: 16.8230 - SLE_disease/counts_loss: 17.3941  36/2119 [..............................] - ETA: 1:45:52 - loss: 186.0995 - SLE_disease/profile_loss: 16.7692 - SLE_disease/counts_loss: 16.9330  37/2119 [..............................] - ETA: 1:45:47 - loss: 181.6896 - SLE_disease/profile_loss: 16.7280 - SLE_disease/counts_loss: 16.4962  38/2119 [..............................] - ETA: 1:45:41 - loss: 177.5398 - SLE_disease/profile_loss: 16.6981 - SLE_disease/counts_loss: 16.0842  39/2119 [..............................] - ETA: 1:45:36 - loss: 173.4948 - SLE_disease/profile_loss: 16.5949 - SLE_disease/counts_loss: 15.6900  40/2119 [..............................] - ETA: 1:45:30 - loss: 169.7063 - SLE_disease/profile_loss: 16.5437 - SLE_disease/counts_loss: 15.3163  41/2119 [..............................] - ETA: 1:45:29 - loss: 166.1054 - SLE_disease/profile_loss: 16.4888 - SLE_disease/counts_loss: 14.9617  42/2119 [..............................] - ETA: 1:45:21 - loss: 162.7331 - SLE_disease/profile_loss: 16.4836 - SLE_disease/counts_loss: 14.6249  43/2119 [..............................] - ETA: 1:45:17 - loss: 159.4236 - SLE_disease/profile_loss: 16.4127 - SLE_disease/counts_loss: 14.3011

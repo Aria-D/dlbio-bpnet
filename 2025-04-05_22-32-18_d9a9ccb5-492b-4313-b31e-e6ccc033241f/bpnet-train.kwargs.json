@@ -1,0 +1,17 @@
+{
+  "dataspec": "dataspec.yml",
+  "output_dir": "./2025-04-05_22-32-18_d9a9ccb5-492b-4313-b31e-e6ccc033241f",
+  "premade": "bpnet9",
+  "config": "config.gin",
+  "override": "train.epochs=10",
+  "gpu": 0,
+  "memfrac_gpu": 0.45,
+  "num_workers": 8,
+  "vmtouch": false,
+  "in_memory": true,
+  "wandb_project": "avsec/bpnet-demo",
+  "cometml_project": "",
+  "run_id": "2025-04-05_22-32-18_d9a9ccb5-492b-4313-b31e-e6ccc033241f",
+  "note_params": "",
+  "overwrite": false
+}

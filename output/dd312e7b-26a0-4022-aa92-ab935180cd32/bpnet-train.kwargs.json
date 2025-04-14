@@ -1,0 +1,17 @@
+{
+  "dataspec": "dataspec_test.yml",
+  "output_dir": "./output/dd312e7b-26a0-4022-aa92-ab935180cd32",
+  "premade": "bpnet9",
+  "config": null,
+  "override": "train.epochs=10",
+  "gpu": 1,
+  "memfrac_gpu": 0.45,
+  "num_workers": 12,
+  "vmtouch": false,
+  "in_memory": false,
+  "wandb_project": "",
+  "cometml_project": "",
+  "run_id": null,
+  "note_params": "",
+  "overwrite": true
+}

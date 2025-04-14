@@ -1,0 +1,14 @@
+task_specs:
+  RA_disease:
+    tracks:
+    - /athena/cayuga_0083/scratch/ard4008/dlbio_final_project/preprocessed_bw_files/RA_disease.bw
+    peaks: /athena/cayuga_0083/scratch/ard4008/dlbio_final_project/preprocessed_summit_bed_files/RA_disease_summits.bed.gz
+    sum_tracks: false
+  SLE_disease:
+    tracks:
+    - /athena/cayuga_0083/scratch/ard4008/dlbio_final_project/preprocessed_bw_files/SLE_disease.bw
+    peaks: /athena/cayuga_0083/scratch/ard4008/dlbio_final_project/preprocessed_summit_bed_files/SLE_disease_summits.bed.gz
+    sum_tracks: false
+fasta_file: /athena/cayuga_0083/scratch/ard4008/dlbio_final_project/hg19.fa
+bias_specs: {}
+path: dataspec_test.yml
