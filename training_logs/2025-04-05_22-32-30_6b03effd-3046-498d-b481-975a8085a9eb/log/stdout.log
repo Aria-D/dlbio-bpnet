@@ -1,3 +1,0 @@
-[2025-04-05 22:32:33,665] - [INFO] - Using gpu: 0, memory fraction: 0.45
-[2025-04-05 22:32:33,696] - [INFO] - Using the following premade configuration: bpnet9
-[2025-04-05 22:32:33,696] - [INFO] - Using the following config.gin files: config.gin
