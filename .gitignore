@@ -13,3 +13,6 @@ __pycache__
 hg19.fa
 hg19.fa.fai
 >>>>>>> 89d4559cc1f3167f815f1e5c7715f02f929a0530
+./training_outputs
+./config.gin
+./bpnet.tar.gz
