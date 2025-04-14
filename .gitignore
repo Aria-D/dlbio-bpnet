@@ -1,2 +1,5 @@
 GCF_000001405.13_GRCh37_genomic.fna
 clean_hg19.fasta
+__pycache__
+hg19.fa
+hg19.fa.fai
