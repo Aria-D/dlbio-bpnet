@@ -13,6 +13,7 @@ __pycache__
 hg19.fa
 hg19.fa.fai
 >>>>>>> 89d4559cc1f3167f815f1e5c7715f02f929a0530
-./training_outputs
+./training_logs
 ./config.gin
 ./bpnet.tar.gz
+genomelake-0.1.4.tar.gz
