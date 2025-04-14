@@ -17,3 +17,4 @@ hg19.fa.fai
 ./config.gin
 ./bpnet.tar.gz
 genomelake-0.1.4.tar.gz
+train_bpnet_2*
