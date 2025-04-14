@@ -15,7 +15,7 @@ The methylation data used in our project was retrieved from ADEx (https://adex.g
 ## Data Preprocessing:
 First, our methylation data must be preprocessed to be compatible with BPNet. The code for preprocessing is located in the `scripts/preprocessing` directory. First, one should change the paths to the directory where the data is stored. This directory should also have paths to the Illumina 450k reference files that have informtation about the loci of each CpG site. Once these paths are corrected, you can just run the script:
 
-<pre> ```python python3 preprocess_data.py``` </pre>
+<pre> ```python3 preprocess_data.py ``` </pre>
 
 This script will output .bedgraph and .bw files that will be in the output directory specfied inside the script. 
 
