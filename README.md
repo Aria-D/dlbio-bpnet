@@ -17,7 +17,7 @@ First, our methylation data must be preprocessed to be compatible with BPNet. Th
 
 <pre lang="markdown">  python3 preprocess_data.py  </pre>
 
-This script will output .bedgraph and .bw files that will be in the output directory specfied inside the script. 
+This script will output .bedgraph and .bw files that will be in the output directory specfied inside the script. In this folder, there is also a notebook called `data_exploration_code.ipynb` that has some of the initial visualizations that we did to assess the data. 
 
 ## Genome Assembly
 
