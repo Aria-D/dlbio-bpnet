@@ -1,13 +1,15 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 ./preprocessed_data/*bedgraph
 ./bpnet
 =======
 GCF_000001405.13_GRCh37_genomic.fna
 hg19.fa
-./preprocessed_data/*
-./not_up_to_date
-./*err
-./*out
-./config.gin
-bedGraphToBigWig  
 >>>>>>> 50f965b3b0de79f61ef352e0ef7be9e69c3a1f6d
+=======
+GCF_000001405.13_GRCh37_genomic.fna
+clean_hg19.fasta
+__pycache__
+hg19.fa
+hg19.fa.fai
+>>>>>>> 89d4559cc1f3167f815f1e5c7715f02f929a0530
