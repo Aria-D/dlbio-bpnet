@@ -18,3 +18,5 @@ hg19.fa.fai
 ./bpnet.tar.gz
 genomelake-0.1.4.tar.gz
 train_bpnet_2*
+bedGraphToBigWig
+hg19.fa.fai
